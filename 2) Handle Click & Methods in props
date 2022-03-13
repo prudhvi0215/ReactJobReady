@@ -1,0 +1,77 @@
+TODOAPP COMPONENT:
+
+import React from "react"
+import Todoitem from "./Todoitem"
+import TodosData from "../todosData"
+import "../index.css"
+
+class TodoApp extends React.Component{
+
+  constructor()
+  {
+    super()
+    this.state = {
+      data: TodosData
+    }
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(id)
+  {
+      this.setState(prevState=>{
+        const updatedTodos = prevState.data.map(todo=>{
+          if(todo.id===id){
+            todo.completed = !todo.completed
+          }
+          return todo
+        })
+
+        return{
+          data: updatedTodos
+        }
+      })
+  }
+
+  render(){
+    const todosContent = this.state.data.map(todo=>{
+      return (
+        <Todoitem key={todo.id} todo={todo} handleClick={this.handleClick}/>
+      )
+    })
+
+    return (
+      <div className="todo-list">
+        {todosContent}
+      </div>
+    )
+  }
+}
+
+
+export default TodoApp
+
+
+
+TODOITEM COMPONENT:
+
+
+import React from "react"
+import "../index.css"
+
+
+//Class Based Components
+class Todoitem extends React.Component{
+
+  render(){
+    return (
+      <div className="todoItem">
+        <input type="checkbox" name="item1" checked={this.props.todo.completed} onChange={()=>{this.props.handleClick(this.props.todo.id)}} />
+        <h4>{this.props.todo.task}</h4>
+      </div>
+    )
+  }
+}
+
+
+export default Todoitem
